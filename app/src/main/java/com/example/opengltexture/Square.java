@@ -32,6 +32,8 @@ public class Square {
         // Enable vertex-array and define its buffer
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+        gl.glColor4f(0.5f, 0.5f, 1.0f, 1.0f);      // Set the current color (NEW)
+
         // Draw the primitives from the vertex-array directly
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length / 3);
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
