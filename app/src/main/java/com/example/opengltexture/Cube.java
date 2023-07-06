@@ -6,7 +6,14 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Cube {
-    private FloatBuffer vertexBuffer;  // Buffer for vertex-array
+    private FloatBuffer vertexBuffer; // Buffer for vertex-array
+
+    private float[] vertices = { // Vertices for a face at z=0
+            -1.0f, -1.0f, 0.0f,  // 0. left-bottom-front
+            1.0f, -1.0f, 0.0f,  // 1. right-bottom-front
+            -1.0f,  1.0f, 0.0f,  // 2. left-top-front
+            1.0f,  1.0f, 0.0f   // 3. right-top-front
+    };
 
     private float[][] colors = {  // Colors of the 6 faces
             {1.0f, 0.5f, 0.0f, 1.0f},  // 0. orange
@@ -15,13 +22,6 @@ public class Cube {
             {0.0f, 0.0f, 1.0f, 1.0f},  // 3. blue
             {1.0f, 0.0f, 0.0f, 1.0f},  // 4. red
             {1.0f, 1.0f, 0.0f, 1.0f}   // 5. yellow
-    };
-
-    private float[] vertices = {  // Vertices for the front face
-            -1.0f, -1.0f, 1.0f,  // 0. left-bottom-front
-            1.0f, -1.0f, 1.0f,  // 1. right-bottom-front
-            -1.0f,  1.0f, 1.0f,  // 2. left-top-front
-            1.0f,  1.0f, 1.0f   // 3. right-top-front
     };
 
     // Constructor - Set up the buffers
@@ -34,7 +34,7 @@ public class Cube {
         vertexBuffer.position(0);           // Rewind
     }
 
-    // Draw the color cube
+    // Draw the shape
     public void draw(GL10 gl) {
         gl.glFrontFace(GL10.GL_CCW);    // Front face in counter-clockwise orientation
         gl.glEnable(GL10.GL_CULL_FACE); // Enable cull face
@@ -43,34 +43,52 @@ public class Cube {
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 
-        // Front
+        // front
+        gl.glPushMatrix();
+        gl.glTranslatef(0.0f, 0.0f, 1.0f);
         gl.glColor4f(colors[0][0], colors[0][1], colors[0][2], colors[0][3]);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+        gl.glPopMatrix();
 
-        // Right - Rotate 90 degree about y-axis
-        gl.glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+        // left
+        gl.glPushMatrix();
+        gl.glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
+        gl.glTranslatef(0.0f, 0.0f, 1.0f);
         gl.glColor4f(colors[1][0], colors[1][1], colors[1][2], colors[1][3]);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+        gl.glPopMatrix();
 
-        // Back - Rotate another 90 degree about y-axis
-        gl.glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+        // back
+        gl.glPushMatrix();
+        gl.glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
+        gl.glTranslatef(0.0f, 0.0f, 1.0f);
         gl.glColor4f(colors[2][0], colors[2][1], colors[2][2], colors[2][3]);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+        gl.glPopMatrix();
 
-        // Left - Rotate another 90 degree about y-axis
+        // right
+        gl.glPushMatrix();
         gl.glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+        gl.glTranslatef(0.0f, 0.0f, 1.0f);
         gl.glColor4f(colors[3][0], colors[3][1], colors[3][2], colors[3][3]);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+        gl.glPopMatrix();
 
-        // Bottom - Rotate 90 degree about x-axis
-        gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+        // top
+        gl.glPushMatrix();
+        gl.glRotatef(270.0f, 1.0f, 0.0f, 0.0f);
+        gl.glTranslatef(0.0f, 0.0f, 1.0f);
         gl.glColor4f(colors[4][0], colors[4][1], colors[4][2], colors[4][3]);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+        gl.glPopMatrix();
 
-        // Top - Rotate another 180 degree about x-axis
-        gl.glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+        // bottom
+        gl.glPushMatrix();
+        gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+        gl.glTranslatef(0.0f, 0.0f, 1.0f);
         gl.glColor4f(colors[5][0], colors[5][1], colors[5][2], colors[5][3]);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+        gl.glPopMatrix();
 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glDisable(GL10.GL_CULL_FACE);
